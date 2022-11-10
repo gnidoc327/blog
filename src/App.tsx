@@ -13,10 +13,9 @@ function App() {
 		};
 	}, [timer]);
 
-	const a = { '1': 1, '2': 2 };
-
 	return (
 		<div style={{ whiteSpace: 'pre-line' }}>
+			<h1>Hello World</h1>
 			<h3>현재 시간 : {time.toLocaleTimeString()}</h3>
 
 			<h3>자기소개</h3>
