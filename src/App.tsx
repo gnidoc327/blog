@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import './App.css';
 
 function App() {
 	const [time, setTime] = useState(new Date());
