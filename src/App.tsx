@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 function App() {
 	const [time, setTime] = useState(new Date());
@@ -15,9 +16,36 @@ function App() {
 
 	return (
 		<div style={{ whiteSpace: 'pre-line' }}>
-			<h1>Hello World</h1>
 			<h3>현재 시간 : {time.toLocaleTimeString()}</h3>
+			<Router basename={process.env.PUBLIC_URL}>
+				<>
+					<nav>
+						<ul>
+							<li>
+								<Link to="/">HOME</Link>
+							</li>
+							<li>
+								<Link to="/resume">이력서</Link>
+							</li>
+							<li>
+								<Link to="/portfolio">포트폴리오</Link>
+							</li>
+						</ul>
+					</nav>
+				</>
+				<Routes>
+					<Route path="/resume" element={<Resume />} />
+					<Route path="/portfolio" element={<Portfolio />} />
+					<Route path="/" element={<>Home</>} />
+				</Routes>
+			</Router>
+		</div>
+	);
+}
 
+const Resume = () => {
+	return (
+		<>
 			<h3>자기소개</h3>
 			<h3>이름 : 김한성</h3>
 			<h3>학력</h3>
@@ -29,8 +57,12 @@ function App() {
 			<>
 				<li>SKT</li>
 			</>
-		</div>
+		</>
 	);
-}
+};
+
+const Portfolio = () => {
+	return <>Portfolio</>;
+};
 
 export default App;
