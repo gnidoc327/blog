@@ -1,6 +1,9 @@
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import axios from 'axios';
 import './App.css';
+import { Button } from 'antd';
 
 function App() {
 	const [time, setTime] = useState(new Date());
@@ -15,25 +18,49 @@ function App() {
 		};
 	}, [timer]);
 
+	const googleLogin = useGoogleLogin({
+		onSuccess: async ({ code }) => {
+			const tokens = await axios.post('http://localhost:5000/auth/google', {
+				// http://localhost:3001/auth/google backend that will exchange the code
+				code,
+			});
+			console.log(tokens, tokens);
+		},
+		flow: 'auth-code',
+	});
+
 	return (
 		<div style={{ whiteSpace: 'pre-line' }}>
 			<h3>현재 시간 : {time.toLocaleTimeString()}</h3>
+			<Button
+				onClick={() => {
+					googleLogin();
+				}}
+			>
+				로그인
+			</Button>
+			<GoogleLogin
+				onSuccess={async (credentialResponse) => {
+					console.log(credentialResponse);
+				}}
+				onError={() => {
+					console.log('Login Failed');
+				}}
+			/>
 			<Router basename={process.env.PUBLIC_URL}>
-				<>
-					<nav>
-						<ul>
-							<li>
-								<Link to="/">HOME</Link>
-							</li>
-							<li>
-								<Link to="/resume">이력서</Link>
-							</li>
-							<li>
-								<Link to="/portfolio">포트폴리오</Link>
-							</li>
-						</ul>
-					</nav>
-				</>
+				<nav>
+					<ul>
+						<li>
+							<Link to="/">HOME</Link>
+						</li>
+						<li>
+							<Link to="/resume">이력서</Link>
+						</li>
+						<li>
+							<Link to="/portfolio">포트폴리오</Link>
+						</li>
+					</ul>
+				</nav>
 				<Routes>
 					<Route path="/resume" element={<Resume />} />
 					<Route path="/portfolio" element={<Portfolio />} />
