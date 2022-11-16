@@ -20,11 +20,9 @@ function App() {
 
 	const googleLogin = useGoogleLogin({
 		onSuccess: async ({ code }) => {
-			const tokens = await axios.post('http://localhost:5000/auth/google', {
-				// http://localhost:3001/auth/google backend that will exchange the code
+			await axios.post('http://localhost:5000/auth/google', {
 				code,
 			});
-			console.log(tokens, tokens);
 		},
 		flow: 'auth-code',
 	});
